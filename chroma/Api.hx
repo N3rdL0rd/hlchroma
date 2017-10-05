@@ -1,21 +1,17 @@
 package chroma;
 
-abstract Color(Int){
-    function new(value){
-        this = value;
-    }
-    public static function fromRGB(r : Int, g : Int, b : Int){
-        return new Color(r | (g << 8) | (b << 16));
-    }
-
-    public function getInt() : Int{
-        return this;
-    }
-}
-
 class Keyboard{
     public static inline var maxRowCount = 6;
     public static inline var maxColCount = 22;
+}
+
+private class Utilities{
+    public static inline function swapColor(hlcolor : Int) : Int {
+        var r = hlcolor >> 16;
+        var g = hlcolor & 0x00FF00;
+        var b = hlcolor & 0x0000FF;
+        return r | g | (b << 16);
+    }
 }
 
 abstract KeyboardCustomEffect(hl.Bytes){
@@ -23,16 +19,16 @@ abstract KeyboardCustomEffect(hl.Bytes){
         this = new hl.Bytes(Keyboard.maxRowCount * Keyboard.maxColCount * 4);
     }
 
-    public function ClearWithColor(color : Color){
+    public function clearWithColor(color : Int){
         for( i in 0 ... Keyboard.maxColCount * Keyboard.maxRowCount){
-            this.setI32(i * 4, color.getInt());
+            this.setI32(i * 4, Utilities.swapColor(color));
         }
     }
 
-    public function SetColor(row : Int, column : Int, color : Color){
+    public function setColor(row : Int, column : Int, color : Int){
         var index = row * Keyboard.maxColCount + column;
         if(index < Keyboard.maxColCount * Keyboard.maxRowCount){
-            this.setI32(index * 4, color.getInt());
+            this.setI32(index * 4, Utilities.swapColor(color));
         }
     }
 }
@@ -42,32 +38,46 @@ abstract KeyboardCustomKeyEffect(hl.Bytes){
         this = new hl.Bytes(Keyboard.maxRowCount * Keyboard.maxColCount * 4 * 2);
     }
 
-    public function ClearWithColor(color : Color){
-        //Set Base Color
+    public function get(){
+        return this;
+    }
+    public function copyBaseColor(effect : hl.Bytes){
         for( i in 0 ... Keyboard.maxColCount * Keyboard.maxRowCount){
-            this.setI32(i * 4, color.getInt());
-        }
-
-        //Set Perma Color (remove all override)
-        for( i in Keyboard.maxColCount * Keyboard.maxRowCount ... Keyboard.maxColCount * Keyboard.maxRowCount * 2){
-            if( i % 2 != 0){
-                this.setI32(i * 4, 0);
-            }   
+            this.setI32(i * 4, effect.getI32(i * 4));
         }
     }
 
-    public function SetBaseColor(row : Int, column : Int, color : Color)
+    public function clearWithColor(color : Int){
+        clearBaseColor(color);
+        removeAllColorOverride();
+    }
+
+    public function clearBaseColor(color : Int){
+        //Set Base Color
+        for( i in 0 ... Keyboard.maxColCount * Keyboard.maxRowCount){
+            this.setI32(i * 4, Utilities.swapColor(color));
+        }
+    }
+
+    public function removeAllColorOverride(){
+        //Set Perma Color (remove all override)
+        for( i in Keyboard.maxColCount * Keyboard.maxRowCount ... Keyboard.maxColCount * Keyboard.maxRowCount * 2){
+                this.setI32(i * 4, 0);
+        }
+    }
+
+    public function setBaseColor(row : Int, column : Int, color : Int)
     {
         var index = row * Keyboard.maxColCount + column;
         if(index < Keyboard.maxColCount * Keyboard.maxRowCount){
-            this.setI32(index * 4, 0x01000000 | color.getInt());
+            this.setI32(index * 4, 0x01000000 | Utilities.swapColor(color));
         }
     }
 
-    public function SetPermaColor(row : Int, column : Int, color : Color){
+    public function setPermaColor(row : Int, column : Int, color : Int){
         var index = row * Keyboard.maxColCount + column + Keyboard.maxColCount * Keyboard.maxRowCount;
-        if(index < Keyboard.maxColCount * Keyboard.maxRowCount){
-            this.setI32(index * 4, 0x01000000 | color.getInt());
+        if(index < Keyboard.maxColCount * Keyboard.maxRowCount + Keyboard.maxColCount * Keyboard.maxRowCount){
+            this.setI32(index * 4, 0x01000000 | Utilities.swapColor(color));
         }
     }
 }
@@ -82,16 +92,16 @@ abstract KeypadCustomEffect(hl.Bytes){
         this = new hl.Bytes(Keypad.maxRowCount * Keypad.maxColCount * 4);
     }
 
-    public function ClearWithColor(color : Color){
+    public function clearWithColor(color : Int){
         for( i in 0 ... Keypad.maxColCount * Keypad.maxRowCount){
-            this.setI32(i * 4, color.getInt());
+            this.setI32(i * 4, Utilities.swapColor(color));
         }
     }
 
-    public function SetColor(row : Int, column : Int, color : Color){
+    public function setColor(row : Int, column : Int, color : Int){
         var index = row * Keypad.maxColCount + column;
         if(index < Keypad.maxColCount * Keypad.maxRowCount){
-            this.setI32(index * 4, color.getInt());
+            this.setI32(index * 4, Utilities.swapColor(color));
         }
     }
 }
@@ -108,16 +118,16 @@ abstract MouseCustomEffect(hl.Bytes)
         this = new hl.Bytes(Mouse.maxRowCount * Mouse.maxColCount * 4);
     }
 
-    public function ClearWithColor(color : Color){
+    public function clearWithColor(color : Int){
         for( i in 0 ... Mouse.maxColCount * Mouse.maxRowCount){
-            this.setI32(i * 4, color.getInt());
+            this.setI32(i * 4, Utilities.swapColor(color));
         }
     }
 
-    public function SetColor(row : Int, column : Int, color : Color){
+    public function setColor(row : Int, column : Int, color : Int){
         var index = row * Keyboard.maxColCount + column;
         if(index < Mouse.maxColCount * Mouse.maxRowCount){
-            this.setI32(index * 4, color.getInt());
+            this.setI32(index * 4, Utilities.swapColor(color));
         }
     }
 }
@@ -132,15 +142,15 @@ abstract HeadsetCustomEffect(hl.Bytes)
         this = new hl.Bytes(Headset.maxLedsCount * 4);
     }
 
-    public function ClearWithColor(color : Color){
+    public function clearWithColor(color : Int){
         for( i in 0 ... Headset.maxLedsCount){
-            this.setI32(i * 4, color.getInt());
+            this.setI32(i * 4, Utilities.swapColor(color));
         }
     }
 
-    public function SetColor(index : Int, color : Color){
+    public function setColor(index : Int, color : Int){
         if(index < Headset.maxLedsCount){
-            this.setI32(index * 4, color.getInt());
+            this.setI32(index * 4, Utilities.swapColor(color));
         }
     }
 }
@@ -155,15 +165,15 @@ abstract MousepadCustomEffect(hl.Bytes)
         this = new hl.Bytes(Mousepad.maxLedsCount* 4);
     }
 
-    public function ClearWithColor(color : Color){
+    public function clearWithColor(color : Int){
         for( i in 0 ... Mousepad.maxLedsCount){
-            this.setI32(i * 4, color.getInt());
+            this.setI32(i * 4, Utilities.swapColor(color));
         }
     }
 
-    public function SetColor(index : Int, color : Color){
+    public function setColor(index : Int, color : Int){
         if(index < Mousepad.maxLedsCount){
-            this.setI32(index * 4, color.getInt());
+            this.setI32(index * 4, Utilities.swapColor(color));
         }
     }
 }
@@ -178,15 +188,15 @@ abstract ChromaLinkCustomEffect(hl.Bytes)
         this = new hl.Bytes(ChromaLink.maxLedsCount* 4);
     }
 
-    public function ClearWithColor(color : Color){
+    public function clearWithColor(color : Int){
         for( i in 0 ... ChromaLink.maxLedsCount){
-            this.setI32(i * 4, color.getInt());
+            this.setI32(i * 4, Utilities.swapColor(color));
         }
     }
 
-    public function SetColor(index : Int, color : Color){
+    public function setColor(index : Int, color : Int){
         if(index < ChromaLink.maxLedsCount){
-            this.setI32(index * 4, color.getInt());
+            this.setI32(index * 4, Utilities.swapColor(color));
         }
     }
 }
@@ -220,5 +230,5 @@ class Api{
     public static function setKeyboardKeysEffect(effect : KeyboardCustomKeyEffect){}
 
     @:hlNative("chroma", "setLinkedEffect")
-    public static function setLinkedEffect(effect :KeyboardCustomEffect){}
+    public static function setLinkedEffect(effect :ChromaLinkCustomEffect){}
 }
