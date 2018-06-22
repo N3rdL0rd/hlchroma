@@ -69,43 +69,43 @@ HL_PRIM bool HL_NAME(init)(){
 }
 
 HL_PRIM void HL_NAME(setMouseEffect)(void* params){
-	if (createMouseEffect) {
+	if (dllHandle && createMouseEffect) {
 		createMouseEffect(Mouse::CHROMA_CUSTOM2, params, NULL);
 	}
 }
 
 HL_PRIM void HL_NAME(setKeyboardEffect)(void* params) {
-	if (createKeyboardEffect) {
+	if (dllHandle && createKeyboardEffect) {
 		createKeyboardEffect(Keyboard::CHROMA_CUSTOM, params, NULL);
 	}
 }
 
 HL_PRIM void HL_NAME(setMousepadEffect)(void* params) {
-	if (createMousePadEffect) {
+	if (dllHandle && createMousePadEffect) {
 		createMousePadEffect(Mousepad::CHROMA_CUSTOM, params, NULL);
 	}
 }
 
 HL_PRIM void HL_NAME(setKeypadEffect)(void* params) {
-	if (createKeypadEffect) {
+	if (dllHandle && createKeypadEffect) {
 		createKeypadEffect(Keypad::CHROMA_CUSTOM, params, NULL);
 	}
 }
 
 HL_PRIM void HL_NAME(setHeadsetEffect)(void* params) {
-	if (createHeadsetEffect) {
+	if (dllHandle && createHeadsetEffect) {
 		createHeadsetEffect(Headset::CHROMA_CUSTOM, params, NULL);
 	}
 }
 
 HL_PRIM void HL_NAME(setKeyboardKeysEffect)(void* params) {
-	if (createKeyboardEffect) {
+	if (dllHandle && createKeyboardEffect) {
 		createKeyboardEffect(Keyboard::CHROMA_CUSTOM_KEY, params, NULL);
 	}
 }
 
 HL_PRIM void HL_NAME(setLinkedEffect)(void* params) {
-	if (createChromaLinkEffect) {
+	if (dllHandle && createChromaLinkEffect) {
 		createChromaLinkEffect(ChromaLink::CHROMA_CUSTOM, params, NULL);
 	}
 }
