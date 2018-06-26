@@ -37,7 +37,7 @@ SetEffectFunction				setEffect				= NULL;
 DeleteEffectFunction			deleteEffect			= NULL;
 
 
-static HMODULE dllHandle;
+static HMODULE dllHandle = NULL;
 
 HL_PRIM bool HL_NAME(init)(){
 	if (dllHandle){
