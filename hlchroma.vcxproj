@@ -102,33 +102,33 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <TargetExt>.hdll</TargetExt>
-    <IncludePath>Include;../../hashlink/src;$(IncludePath);./</IncludePath>
-    <LibraryPath>Libraries;../../hashlink/Debug;$(LibraryPath)</LibraryPath>
-    <OutDir>..\..\hashlink\$(Configuration)\</OutDir>
+    <IncludePath>Include;$(HASHLINK_SRC)/src;$(IncludePath);./</IncludePath>
+    <LibraryPath>Libraries;$(HASHLINK_SRC)/Debug;$(LibraryPath)</LibraryPath>
+    <OutDir>$(HASHLINK_SRC)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <TargetExt>.hdll</TargetExt>
-    <IncludePath>Include;../../hashlink/src;$(IncludePath);./</IncludePath>
-    <LibraryPath>Libraries;../../hashlink/Release;$(LibraryPath)</LibraryPath>
+    <IncludePath>Include;$(HASHLINK_SRC)/src;$(IncludePath);./</IncludePath>
+    <LibraryPath>Libraries;$(HASHLINK_SRC)/Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseVS2013|Win32'">
     <TargetExt>.hdll</TargetExt>
-    <IncludePath>Include;../../hashlink/src;$(IncludePath);./</IncludePath>
-    <LibraryPath>Libraries;../../hashlink/ReleaseVS2013;$(LibraryPath)</LibraryPath>
+    <IncludePath>Include;$(HASHLINK_SRC)/src;$(IncludePath);./</IncludePath>
+    <LibraryPath>Libraries;$(HASHLINK_SRC)/ReleaseVS2013;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetExt>.hdll</TargetExt>
-    <IncludePath>Include;../../hashlink/src;$(IncludePath)</IncludePath>
+    <IncludePath>Include;$(HASHLINK_SRC)/src;$(IncludePath)</IncludePath>
     <LibraryPath>Libraries;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <TargetExt>.hdll</TargetExt>
-    <IncludePath>Include;../../hashlink/src;$(IncludePath)</IncludePath>
+    <IncludePath>Include;$(HASHLINK_SRC)/src;$(IncludePath)</IncludePath>
     <LibraryPath>Libraries;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseVS2013|x64'">
     <TargetExt>.hdll</TargetExt>
-    <IncludePath>Include;../../hashlink/src;$(IncludePath)</IncludePath>
+    <IncludePath>Include;$(HASHLINK_SRC)/src;$(IncludePath)</IncludePath>
     <LibraryPath>Libraries;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
