@@ -1,4 +1,5 @@
 #define HL_NAME(n) chroma_##n
+#include <Windows.h>
 #include <hl.h>
 #include <chroma/RzChromaSDKTypes.h>
 #include <chroma/RzErrors.h>
